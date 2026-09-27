@@ -1,0 +1,25 @@
+# Calendar IDs are email addresses and live in environment variables, not here:
+#   HUB_CALENDAR_ID          the calendar that receives the copies
+#   CALENDAR_ID_<NAME>       one per source below, name upper-cased (CALENDAR_ID_WORK ...)
+# In GitHub Actions these come from repository secrets.
+
+# Days forward from now that are copied onto the hub.
+sync_days: 90
+
+# Days between automatic full resyncs, which roll the window forward.
+full_resync_days: 30
+
+# Source calendars. color_id values: 6 Tangerine, 9 Blueberry, 11 Tomato, 10 Basil.
+sources:
+  - name: massage
+    prefix: "massage: "
+    color_id: "6"
+  - name: will
+    prefix: "will: "
+    color_id: "9"
+  - name: legal
+    prefix: "legal: "
+    color_id: "11"
+  - name: work
+    prefix: "work: "
+    color_id: "10"

@@ -1,0 +1,20 @@
+# Built binaries
+/calendar-sync
+/calendar-sync-linux-amd64
+/dist/
+
+# Local credentials
+.env
+.env.*
+*.token
+token.json
+refresh-token*
+
+# Local scratch
+/tmp/
+
+# Claude Code local settings
+/.claude/
+
+# Project brief, kept out of the public repo
+/calendar-sync-brief.md

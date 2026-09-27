@@ -1,0 +1,81 @@
+name: sync
+
+# One job runs the sync every 10 minutes for just under six hours (the
+# hosted-runner job limit), then starts its successor. GitHub's own cron is
+# only a backup that restarts the chain if it ever stops: scheduled runs are
+# best-effort and were observed firing a few times a day, not every 10 minutes.
+# The concurrency group keeps exactly one run active and at most one queued.
+# To stop the chain, cancel the running job; to start it, run the workflow.
+
+on:
+  schedule:
+    - cron: "17 */3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: sync
+  cancel-in-progress: false
+
+env:
+  LOOP_MINUTES: 340
+  INTERVAL_SECONDS: 600
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    steps:
+      - uses: actions/checkout@v7
+      - name: Download latest release binary
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release download --pattern calendar-sync-linux-amd64 --dir "$RUNNER_TEMP"
+          chmod +x "$RUNNER_TEMP/calendar-sync-linux-amd64"
+      - name: Sync every 10 minutes
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+          HUB_CALENDAR_ID: ${{ secrets.HUB_CALENDAR_ID }}
+          CALENDAR_ID_MASSAGE: ${{ secrets.CALENDAR_ID_MASSAGE }}
+          CALENDAR_ID_WILL: ${{ secrets.CALENDAR_ID_WILL }}
+          CALENDAR_ID_LEGAL: ${{ secrets.CALENDAR_ID_LEGAL }}
+          CALENDAR_ID_WORK: ${{ secrets.CALENDAR_ID_WORK }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          deadline=$(( $(date +%s) + LOOP_MINUTES * 60 ))
+          failures=0
+          while :; do
+            echo "::group::sync $(date -u +%FT%TZ)"
+            if ! "$RUNNER_TEMP/calendar-sync-linux-amd64" sync --config config.yaml --state state.json; then
+              failures=$((failures + 1))
+            fi
+            # Commit even after a failed pass, so sources that succeeded keep their tokens.
+            if git diff --quiet -- state.json; then
+              echo "state.json unchanged"
+            else
+              git add state.json
+              git commit -m "sync: update state"
+              git pull --rebase
+              git push
+            fi
+            echo "::endgroup::"
+            if [ "$(date +%s)" -ge "$deadline" ]; then
+              break
+            fi
+            sleep "$INTERVAL_SECONDS"
+          done
+          echo "passes with failures: $failures"
+          [ "$failures" -eq 0 ]
+      # Runs after a failed loop too, so one bad pass never ends the chain.
+      - name: Start the next run
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run sync.yml --ref main
