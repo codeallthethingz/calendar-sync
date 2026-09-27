@@ -4,11 +4,6 @@ export default {
   async scheduled(_event, env, ctx) {
     ctx.waitUntil(dispatch(env));
   },
-
-  // GET /  reports the config so a deploy can be checked from a browser.
-  async fetch(_request, env) {
-    return new Response(`calendar-sync-cron: dispatches ${env.WORKFLOW_FILE} in ${env.GITHUB_REPO} every 10 minutes\n`);
-  },
 };
 
 async function dispatch(env) {

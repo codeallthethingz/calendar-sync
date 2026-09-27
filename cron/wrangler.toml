@@ -1,6 +1,8 @@
 name = "calendar-sync-cron"
 main = "worker.js"
 compatibility_date = "2026-09-01"
+# Cron only: no public URL, so no workers.dev subdomain is needed.
+workers_dev = false
 
 [triggers]
 crons = ["*/10 * * * *"]
