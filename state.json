@@ -1,1 +1,18 @@
-{}
+{
+  "legal": {
+    "syncToken": "CK_Bj86IipcDEK_Bj86IipcDGAEgku7N1gMoku7N1gM=",
+    "lastFullSync": "2026-09-27T13:35:24.485215611Z"
+  },
+  "massage": {
+    "syncToken": "CP_dz6CSipcDEP_dz6CSipcDGAEgku7N1gMoku7N1gM=",
+    "lastFullSync": "2026-09-27T13:34:58.133842371Z"
+  },
+  "will": {
+    "syncToken": "CO-qm8GyipcDEO-qm8GyipcDGAEgku7N1gMoku7N1gM=",
+    "lastFullSync": "2026-09-27T13:35:05.613709207Z"
+  },
+  "work": {
+    "syncToken": "CK_354zBjpcDEK_354zBjpcDGAogku7N1gMoku7N1gM=",
+    "lastFullSync": "2026-09-27T13:35:25.386622496Z"
+  }
+}
