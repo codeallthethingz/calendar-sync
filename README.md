@@ -56,16 +56,22 @@ git push origin v0.2.0
 ```
 
 The release workflow builds `calendar-sync-linux-amd64` and attaches it to the
-release. The sync workflow downloads the latest release when each chain link
-starts.
+release. The sync workflow downloads the latest release on every run.
 
 ## How the schedule works
 
-GitHub's cron is best-effort and was observed firing a few times a day. So one
-job loops for just under six hours, syncing every 10 minutes, then dispatches
-its successor with the built-in token. The cron stays on as a backup that
-restarts the chain if it stops. Cancel the running job to stop it; run the
-workflow by hand to start it.
+GitHub's cron is best-effort and was observed firing a few times a day. So a
+Cloudflare Worker in `cron/` runs on a cron trigger every 10 minutes and calls
+GitHub's API to start the sync workflow. GitHub's own schedule stays on as a
+backup, every 3 hours.
+
+Deploy the worker once, from `cron/`:
+
+```sh
+npx wrangler login
+npx wrangler deploy
+npx wrangler secret put GITHUB_TOKEN   # fine-grained token: this repo, Actions read and write
+```
 
 ## One-time setup
 

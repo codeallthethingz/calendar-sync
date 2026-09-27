@@ -1,0 +1,13 @@
+name = "calendar-sync-cron"
+main = "worker.js"
+compatibility_date = "2026-09-01"
+
+[triggers]
+crons = ["*/10 * * * *"]
+
+[vars]
+GITHUB_REPO = "codeallthethingz/calendar-sync"
+WORKFLOW_FILE = "sync.yml"
+
+# Secret, set with: npx wrangler secret put GITHUB_TOKEN
+# A fine-grained token for the repo above with Actions: read and write.
