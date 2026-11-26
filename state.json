@@ -1,18 +1,18 @@
 {
   "legal": {
-    "syncToken": "CN_70fmYoZgDEN_70fmYoZgDGAEg3dLs3QMo3dLs3QM=",
-    "lastFullSync": "2026-10-27T13:41:31.094200579Z"
+    "syncToken": "CN_70fmYoZgDEN_70fmYoZgDGAEg1Obx5wMo1Obx5wM=",
+    "lastFullSync": "2026-11-26T16:56:44.434051624Z"
   },
   "massage": {
-    "syncToken": "CP-V1_Wm3pcDEP-V1_Wm3pcDGAEg3dLs3QMo3dLs3QM=",
-    "lastFullSync": "2026-10-27T13:41:08.372800165Z"
+    "syncToken": "CM-8zN-QoZgDEM-8zN-QoZgDGAEg1Obx5wMo1Obx5wM=",
+    "lastFullSync": "2026-11-26T16:56:20.298249923Z"
   },
   "will": {
-    "syncToken": "CP-d9aPenpgDEP-d9aPenpgDGAEg3dLs3QMo3dLs3QM=",
-    "lastFullSync": "2026-10-27T13:41:16.53280286Z"
+    "syncToken": "CI-V-eTwpZgDEI-V-eTwpZgDGAEg1Obx5wMo1Obx5wM=",
+    "lastFullSync": "2026-11-26T16:56:28.516505741Z"
   },
   "work": {
-    "syncToken": "CP_wuMH4_pcDEP_wuMH4_pcDGAog3dLs3QMo3dLs3QM=",
-    "lastFullSync": "2026-10-27T13:41:32.364602014Z"
+    "syncToken": "CP-EjqOJppgDEP-EjqOJppgDGAog1Obx5wMo1Obx5wM=",
+    "lastFullSync": "2026-11-26T16:56:45.852799163Z"
   }
 }
